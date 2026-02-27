@@ -17,7 +17,14 @@ export function formatTime(seconds: number): string {
   return `${minutes}:${secs.toString().padStart(2, "0")}`;
 }
 
-export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | null>) {
+/**
+ * @param videoRef - ref to the <video> element
+ * @param src - current video source URL (pass so effects re-run on source change)
+ */
+export function useFrameStepper(
+  videoRef: React.RefObject<HTMLVideoElement | null>,
+  src: string | null,
+) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -39,25 +46,35 @@ export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | nul
     return () => cancelAnimationFrame(animationRef.current);
   }, [updateTime]);
 
-  // Listen for metadata load to get duration
+  // Reset state and re-attach listeners when source changes
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !src) {
+      setDuration(0);
+      setCurrentTime(0);
+      setIsPlaying(false);
+      return;
+    }
 
-    const onLoadedMetadata = () => setDuration(video.duration);
+    const onLoadedMetadata = () => {
+      setDuration(video.duration);
+      setCurrentTime(0);
+    };
     const onEnded = () => setIsPlaying(false);
 
     video.addEventListener("loadedmetadata", onLoadedMetadata);
     video.addEventListener("ended", onEnded);
 
-    // If already loaded (e.g. re-mount)
-    if (video.duration) setDuration(video.duration);
+    // If metadata already loaded (cached / fast load)
+    if (video.readyState >= 1) {
+      setDuration(video.duration);
+    }
 
     return () => {
       video.removeEventListener("loadedmetadata", onLoadedMetadata);
       video.removeEventListener("ended", onEnded);
     };
-  }, [videoRef]);
+  }, [videoRef, src]);
 
   const togglePlayPause = useCallback(() => {
     const video = videoRef.current;
@@ -77,7 +94,6 @@ export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | nul
       const video = videoRef.current;
       if (!video) return;
 
-      // Pause first if playing
       if (!video.paused) {
         video.pause();
         setIsPlaying(false);
@@ -116,7 +132,7 @@ export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | nul
   const seek = useCallback(
     (time: number) => {
       const video = videoRef.current;
-      if (!video) return;
+      if (!video || !video.duration) return;
       const clamped = Math.max(0, Math.min(time, video.duration));
       video.currentTime = clamped;
       setCurrentTime(clamped);

@@ -24,7 +24,7 @@ const VideoPlayer = ({ label }: VideoPlayerProps) => {
     changeSpeed,
     changeVolume,
     seek,
-  } = useFrameStepper(videoRef);
+  } = useFrameStepper(videoRef, videoSrc);
 
   // Clean up Object URL on unmount or source change
   useEffect(() => {
