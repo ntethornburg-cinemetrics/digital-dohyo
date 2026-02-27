@@ -1,9 +1,12 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Video, BarChart3, Library, LogIn } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Video, BarChart3, Library, LogIn, LogOut } from "lucide-react";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -12,6 +15,11 @@ const Navbar = () => {
     { path: "/library", label: "Library", icon: Library },
     { path: "/progress", label: "Progress", icon: BarChart3 },
   ];
+
+  function handleSignOut() {
+    signOut();
+    navigate("/");
+  }
 
   return (
     <nav className="border-b bg-card">
@@ -41,12 +49,24 @@ const Navbar = () => {
               </Button>
             ))}
 
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/auth" className="flex items-center gap-2">
-                <LogIn className="h-4 w-4" />
-                <span className="hidden md:inline">Sign In</span>
-              </Link>
-            </Button>
+            {user ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSignOut}
+                className="flex items-center gap-2"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="hidden md:inline">Sign Out</span>
+              </Button>
+            ) : (
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/auth" className="flex items-center gap-2">
+                  <LogIn className="h-4 w-4" />
+                  <span className="hidden md:inline">Sign In</span>
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
       </div>
