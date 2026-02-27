@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const FRAME_RATE = 30;
 const FRAME_DURATION = 1 / FRAME_RATE;
 
-const SPEED_OPTIONS = [0.25, 0.5, 1, 2] as const;
+const SPEED_OPTIONS = [0.25, 0.5, 1] as const;
 type Speed = (typeof SPEED_OPTIONS)[number];
 
 export function formatTime(seconds: number): string {
