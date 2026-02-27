@@ -22,6 +22,7 @@ export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | nul
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [speed, setSpeed] = useState<Speed>(1);
+  const [volume, setVolume] = useState(1);
   const animationRef = useRef<number>(0);
 
   // Sync time display with video during playback
@@ -101,6 +102,17 @@ export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | nul
     [videoRef],
   );
 
+  const changeVolume = useCallback(
+    (newVolume: number) => {
+      const video = videoRef.current;
+      if (video) {
+        video.volume = newVolume;
+      }
+      setVolume(newVolume);
+    },
+    [videoRef],
+  );
+
   const seek = useCallback(
     (time: number) => {
       const video = videoRef.current;
@@ -117,10 +129,12 @@ export function useFrameStepper(videoRef: React.RefObject<HTMLVideoElement | nul
     currentTime,
     duration,
     speed,
+    volume,
     speedOptions: SPEED_OPTIONS,
     togglePlayPause,
     advanceFrame,
     changeSpeed,
+    changeVolume,
     seek,
   };
 }

@@ -17,10 +17,12 @@ const VideoPlayer = ({ label }: VideoPlayerProps) => {
     currentTime,
     duration,
     speed,
+    volume,
     speedOptions,
     togglePlayPause,
     advanceFrame,
     changeSpeed,
+    changeVolume,
     seek,
   } = useFrameStepper(videoRef);
 
@@ -89,10 +91,12 @@ const VideoPlayer = ({ label }: VideoPlayerProps) => {
           duration={duration}
           speed={speed}
           speedOptions={speedOptions}
+          volume={volume}
           onTogglePlayPause={togglePlayPause}
           onAdvanceFrame={advanceFrame}
           onChangeSpeed={changeSpeed}
           onSeek={seek}
+          onVolumeChange={changeVolume}
         />
       </div>
     </div>
