@@ -33,10 +33,10 @@ Subscription-based sumo video analysis web app. Users upload sumo videos, compar
 - [ ] Git init, push to GitHub, connect Vercel
 
 ### Milestone 2: Single Video Player
-- [ ] VideoPlayer.tsx with scrubber and time display
-- [ ] VideoUploader.tsx with file input + Object URLs
-- [ ] PlaybackControls.tsx (play/pause, frame-step, speed)
-- [ ] useFrameStepper.ts hook (FRAME_DURATION = 1/30)
+- [x] VideoPlayer.tsx with scrubber and time display
+- [x] VideoUploader.tsx with file input + Object URLs
+- [x] PlaybackControls.tsx (play/pause, frame-step, speed)
+- [x] useFrameStepper.ts hook (FRAME_DURATION = 1/30)
 
 ### Milestone 3: Side-by-Side + Sync Playback
 - [ ] useVideoSync.ts for two synced video refs
