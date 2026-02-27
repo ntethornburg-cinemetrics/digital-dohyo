@@ -29,7 +29,7 @@ export function useFrameStepper(
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [speed, setSpeed] = useState<Speed>(1);
-  const [volume, setVolume] = useState(1);
+  const [volume, setVolume] = useState(0);
   const animationRef = useRef<number>(0);
 
   // Sync time display with video during playback

@@ -67,6 +67,7 @@ const VideoPlayer = ({ label }: VideoPlayerProps) => {
           className="h-full w-full"
           onClick={togglePlayPause}
           playsInline
+          muted
         />
         {/* Play/pause indicator overlay */}
         {!isPlaying && duration > 0 && (

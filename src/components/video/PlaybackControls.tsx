@@ -41,8 +41,8 @@ const PlaybackControls = ({
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const scrubberRef = useRef<HTMLDivElement>(null);
   const [isScrubbing, setIsScrubbing] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const prevVolume = useRef(volume);
+  const [isMuted, setIsMuted] = useState(volume === 0);
+  const prevVolume = useRef(volume || 1);
 
   const seekFromEvent = useCallback(
     (clientX: number) => {
